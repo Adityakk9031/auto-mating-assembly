@@ -1136,9 +1136,162 @@ function _pairwiseCompatJS(q1, q2, t1, t2, maxClear) {
       } else if (Math.abs(g) > maxClear) {
         return false;
       }
+    } else if (q1.sample_points && q2.sample_points && t1.sample_points && t2.sample_points) {
+      let minSq12 = 1e9, maxSq12 = -1e9, minSt12 = 1e9, maxSt12 = -1e9;
+      let minSq21 = 1e9, maxSq21 = -1e9, minSt21 = 1e9, maxSt21 = -1e9;
+      const oq1 = q1.origin || q1.centroid, oq2 = q2.origin || q2.centroid;
+      const ot1 = t1.origin || t1.centroid, ot2 = t2.origin || t2.centroid;
+      for (const p of q2.sample_points) { const v = _vDot(_vSub(p, oq1), q1.normal); minSq12 = Math.min(minSq12, v); maxSq12 = Math.max(maxSq12, v); }
+      for (const p of t2.sample_points) { const v = _vDot(_vSub(p, ot1), t1.normal); minSt12 = Math.min(minSt12, v); maxSt12 = Math.max(maxSt12, v); }
+      for (const p of q1.sample_points) { const v = _vDot(_vSub(p, oq2), q2.normal); minSq21 = Math.min(minSq21, v); maxSq21 = Math.max(maxSq21, v); }
+      for (const p of t1.sample_points) { const v = _vDot(_vSub(p, ot2), t2.normal); minSt21 = Math.min(minSt21, v); maxSt21 = Math.max(maxSt21, v); }
+      const ov1 = Math.min(maxSq12, -minSt12) - Math.max(minSq12, -maxSt12);
+      const ov2 = Math.min(maxSq21, -minSt21) - Math.max(minSq21, -maxSt21);
+      if (ov1 < -0.5 || ov2 < -0.5) return false;
     }
   }
   return true;
+}
+
+function _matMul3(A, B) {
+  const C = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      C[i][j] = A[i][0] * B[0][j] + A[i][1] * B[1][j] + A[i][2] * B[2][j];
+    }
+  }
+  return C;
+}
+
+function _matVec3(R, v) {
+  return [
+    R[0][0] * v[0] + R[0][1] * v[1] + R[0][2] * v[2],
+    R[1][0] * v[0] + R[1][1] * v[1] + R[1][2] * v[2],
+    R[2][0] * v[0] + R[2][1] * v[1] + R[2][2] * v[2],
+  ];
+}
+
+function _rodriguesJS(u, v) {
+  const un = _vNorm(u), vn = _vNorm(v);
+  const dot = Math.max(-1, Math.min(1, _vDot(un, vn)));
+  if (dot > 1 - 1e-7) return [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+  if (dot < -1 + 1e-7) {
+    const ortho = Math.abs(un[0]) < 0.9 ? [1, 0, 0] : [0, 1, 0];
+    const ax = _vNorm(_vCross(un, ortho));
+    return [
+      [-1 + 2 * ax[0] * ax[0], 2 * ax[0] * ax[1], 2 * ax[0] * ax[2]],
+      [2 * ax[1] * ax[0], -1 + 2 * ax[1] * ax[1], 2 * ax[1] * ax[2]],
+      [2 * ax[2] * ax[0], 2 * ax[2] * ax[1], -1 + 2 * ax[2] * ax[2]],
+    ];
+  }
+  const c = _vCross(un, vn);
+  const s = Math.hypot(c[0], c[1], c[2]);
+  const k = (1 - dot) / (s * s);
+  const K = [
+    [0, -c[2], c[1]],
+    [c[2], 0, -c[0]],
+    [-c[1], c[0], 0],
+  ];
+  const K2 = _matMul3(K, K);
+  return [
+    [1 + K[0][0] + k * K2[0][0], K[0][1] + k * K2[0][1], K[0][2] + k * K2[0][2]],
+    [K[1][0] + k * K2[1][0], 1 + K[1][1] + k * K2[1][1], K[1][2] + k * K2[1][2]],
+    [K[2][0] + k * K2[2][0], K[2][1] + k * K2[2][1], 1 + K[2][2] + k * K2[2][2]],
+  ];
+}
+
+function _solvePoseJS(qFaces, tFaces) {
+  const k = qFaces.length;
+  const uList = [], vList = [];
+  for (let i = 0; i < k; i++) {
+    const q = qFaces[i], t = tFaces[i];
+    if (q.normal && t.normal) {
+      uList.push(_vNorm(q.normal));
+      vList.push(_vScale(_vNorm(t.normal), -1));
+    } else if (q.axis && t.axis) {
+      const sgn = q.surface_type === 'CONE' ? 1 : 1;
+      uList.push(_vNorm(q.axis));
+      vList.push(_vScale(_vNorm(t.axis), sgn));
+    }
+  }
+
+  let R = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+  if (uList.length === 1) {
+    R = _rodriguesJS(uList[0], vList[0]);
+  } else if (uList.length >= 2) {
+    // Find two non-collinear direction vectors
+    let idx2 = -1;
+    const e1q = uList[0], e1t = vList[0];
+    for (let i = 1; i < uList.length; i++) {
+      if (Math.abs(_vDot(e1q, uList[i])) < 0.98) {
+        idx2 = i;
+        break;
+      }
+    }
+    if (idx2 === -1) {
+      R = _rodriguesJS(e1q, e1t);
+    } else {
+      const u2 = uList[idx2], v2 = vList[idx2];
+      const e2q = _vNorm(_vSub(u2, _vScale(e1q, _vDot(u2, e1q))));
+      const e3q = _vCross(e1q, e2q);
+      const e2t = _vNorm(_vSub(v2, _vScale(e1t, _vDot(v2, e1t))));
+      const e3t = _vCross(e1t, e2t);
+      const Et = [
+        [e1t[0], e2t[0], e3t[0]],
+        [e1t[1], e2t[1], e3t[1]],
+        [e1t[2], e2t[2], e3t[2]],
+      ];
+      const EqT = [
+        [e1q[0], e1q[1], e1q[2]],
+        [e2q[0], e2q[1], e2q[2]],
+        [e3q[0], e3q[1], e3q[2]],
+      ];
+      R = _matMul3(Et, EqT);
+    }
+  }
+
+  // Verify all directional constraints are satisfied under R
+  for (let i = 0; i < uList.length; i++) {
+    const ru = _matVec3(R, uList[i]);
+    if (_vDot(ru, vList[i]) < 0.97) return null;
+  }
+
+  // Compute translation aligning centroids and iteratively projecting onto plane/axis constraints
+  const qCent = [0, 0, 0], tCent = [0, 0, 0];
+  for (let i = 0; i < k; i++) {
+    for (let d = 0; d < 3; d++) {
+      qCent[d] += qFaces[i].centroid[d] / k;
+      tCent[d] += tFaces[i].centroid[d] / k;
+    }
+  }
+  const rqCent = _matVec3(R, qCent);
+  let tVec = _vSub(tCent, rqCent);
+
+  // Refine tVec by Gauss-Seidel projections onto matched plane/cylinder constraints
+  for (let iter = 0; iter < 4; iter++) {
+    for (let i = 0; i < k; i++) {
+      const q = qFaces[i], t = tFaces[i];
+      const pq = _vAdd(_matVec3(R, q.origin || q.centroid), tVec);
+      const pt = t.origin || t.centroid;
+      if (t.surface_type === 'PLANE' && t.normal) {
+        const err = _vDot(_vSub(pt, pq), t.normal);
+        tVec = _vAdd(tVec, _vScale(t.normal, err * 0.5));
+      } else if (t.surface_type === 'CYLINDER' && t.axis) {
+        const diff = _vSub(pt, pq);
+        const perp = _vSub(diff, _vScale(t.axis, _vDot(diff, t.axis)));
+        tVec = _vAdd(tVec, perp);
+      } else if (t.surface_type === 'SPHERE' || t.surface_type === 'CONE') {
+        tVec = _vSub(pt, _matVec3(R, q.origin || q.centroid));
+      }
+    }
+  }
+
+  return [
+    [R[0][0], R[0][1], R[0][2], tVec[0]],
+    [R[1][0], R[1][1], R[1][2], tVec[1]],
+    [R[2][0], R[2][1], R[2][2], tVec[2]],
+    [0, 0, 0, 1],
+  ];
 }
 
 function clientSideMatch(data, selFaces, exactTol, maxClear) {
@@ -1163,25 +1316,7 @@ function clientSideMatch(data, selFaces, exactTol, maxClear) {
   const qFaces = curFaces.map(id => qMap.get(id)).filter(Boolean);
   if (qFaces.length === 0) return [];
 
-  // If curFaces is a subset of default_face_ids (>=2 faces), project default_matches and re-evaluate fit
-  if (data.default_matches && curFaces.every(id => defFaces.includes(id)) && curFaces.length >= 2) {
-    return data.default_matches.map((m, idx) => {
-      const copy = JSON.parse(JSON.stringify(m));
-      const idxs = curFaces.map(fid => m.query_face_ids.indexOf(fid)).filter(i => i >= 0);
-      copy.match_id = idx;
-      copy.query_face_ids = idxs.map(i => m.query_face_ids[i]);
-      copy.target_global_face_ids = idxs.map(i => m.target_global_face_ids[i]);
-      copy.target_local_face_ids = idxs.map(i => m.target_local_face_ids[i]);
-      copy.target_part_ids = idxs.map(i => m.target_part_ids[i]);
-      const gapInd = copy.opposing_clearance_mm !== null ? copy.opposing_clearance_mm : copy.mean_gap_mm;
-      if (copy.min_gap_mm < -0.01) copy.fit_type = 'INTERFERENCE_FIT';
-      else if (gapInd <= exactTol && copy.max_gap_mm <= exactTol + 0.05) copy.fit_type = 'EXACT_FIT';
-      else copy.fit_type = 'SLIDING_CLEARANCE_FIT';
-      return copy;
-    });
-  }
-
-  // General k-face subgraph search across non-self assembly parts
+  // General k-face SE(3) subgraph search across all non-self assembly parts
   const selfSet = new Set(data.self_part_ids || []);
   const results = [];
   const verifiedSets = new Set();
@@ -1196,11 +1331,66 @@ function clientSideMatch(data, selFaces, exactTol, maxClear) {
     const usedIds = new Set();
 
     function backtrack(depth) {
-      if (results.length >= 25) return;
+      if (results.length >= 40) return;
       if (depth === k) {
-        const setKey = assignedT.map(t => t.global_id).slice().sort((a, b) => a - b).join(',');
+        const setKey = pt.part_id + ':' + assignedT.map(t => t.global_id).slice().sort((a, b) => a - b).join(',');
         if (verifiedSets.has(setKey)) return;
-        verifiedSets.add(setKey);
+
+        const T = _solvePoseJS(qFaces, assignedT);
+        if (!T) return;
+
+        // Verify signed surface gaps and area/extent compatibility for each pair
+        const R = [T[0].slice(0, 3), T[1].slice(0, 3), T[2].slice(0, 3)];
+        const tVec = [T[0][3], T[1][3], T[2][3]];
+        let sumGap = 0, minGap = 1e9, maxGap = -1e9;
+        for (let i = 0; i < k; i++) {
+          const qi = qFaces[i], ti = assignedT[i];
+          const ratio = Math.min(qi.area, ti.area) / Math.max(qi.area, ti.area, 1e-3);
+          if (k === 1 && ratio < 0.65) return;
+          if (k >= 2 && (ti.area < qi.area * 0.65 || ratio < 0.15)) return;
+
+          let g = 0.01;
+          if (ti.surface_type === 'PLANE' && ti.normal) {
+            const pq = _vAdd(_matVec3(R, qi.origin || qi.centroid), tVec);
+            g = _vDot(_vSub(pq, ti.origin || ti.centroid), ti.normal);
+          } else if (ti.surface_type === 'CYLINDER' || ti.surface_type === 'SPHERE') {
+            g = ti.sense < 0 ? (ti.radius - qi.radius) : (qi.radius - ti.radius);
+          }
+          if (g < -0.15 || g > maxClear + 0.2) return;
+          // Trimmed face sample-point coverage check with scale-adaptive sample spacing
+          if (qi.sample_points && ti.sample_points && qi.sample_points.length > 0 && ti.sample_points.length > 0) {
+            const tSpan = Math.max(
+              ti.bbox_max[0] - ti.bbox_min[0],
+              ti.bbox_max[1] - ti.bbox_min[1],
+              ti.bbox_max[2] - ti.bbox_min[2],
+              10.0
+            );
+            const tol2 = Math.max(25.0, (tSpan * 0.26) ** 2);
+            let hitQ = 0, hitT = 0;
+            const qPtsW = qi.sample_points.map(p => _vAdd(_matVec3(R, p), tVec));
+            for (const pw of qPtsW) {
+              let bestD2 = 1e18;
+              for (const tp of ti.sample_points) {
+                const d2 = (pw[0] - tp[0]) ** 2 + (pw[1] - tp[1]) ** 2 + (pw[2] - tp[2]) ** 2;
+                if (d2 < bestD2) bestD2 = d2;
+              }
+              if (bestD2 <= tol2) hitQ++;
+            }
+            for (const tp of ti.sample_points) {
+              let bestD2 = 1e18;
+              for (const pw of qPtsW) {
+                const d2 = (pw[0] - tp[0]) ** 2 + (pw[1] - tp[1]) ** 2 + (pw[2] - tp[2]) ** 2;
+                if (d2 < bestD2) bestD2 = d2;
+              }
+              if (bestD2 <= tol2) hitT++;
+            }
+            const cov = Math.max(hitQ / qPtsW.length, hitT / ti.sample_points.length);
+            if (cov < 0.45) return;
+          }
+          sumGap += g;
+          minGap = Math.min(minGap, g);
+          maxGap = Math.max(maxGap, g);
+        }
 
         // Compute opposing clearance or radial clearance
         let opp = null;
@@ -1220,31 +1410,10 @@ function clientSideMatch(data, selFaces, exactTol, maxClear) {
           }
         }
 
-        const gap = opp !== null ? Math.max(0, opp * 0.5) : 0.015;
-        const gapInd = opp !== null ? opp : gap;
-        const fit = gapInd < -0.01 ? 'INTERFERENCE_FIT' : (gapInd <= exactTol ? 'EXACT_FIT' : 'SLIDING_CLEARANCE_FIT');
-
-        // Use default match transform if matching same part, else align centroids
-        let T = null;
-        if (data.default_matches) {
-          const dm = data.default_matches.find(m => m.part_ids.includes(pt.part_id));
-          if (dm) T = dm.transform_4x4;
-        }
-        if (!T) {
-          const qC = [0, 0, 0], tC = [0, 0, 0];
-          for (let i = 0; i < k; i++) {
-            for (let d = 0; d < 3; d++) {
-              qC[d] += qFaces[i].centroid[d] / k;
-              tC[d] += assignedT[i].centroid[d] / k;
-            }
-          }
-          T = [
-            [1, 0, 0, tC[0] - qC[0]],
-            [0, 1, 0, tC[1] - qC[1]],
-            [0, 0, 1, tC[2] - qC[2]],
-            [0, 0, 0, 1],
-          ];
-        }
+        verifiedSets.add(setKey);
+        const meanGap = sumGap / k;
+        const gapInd = opp !== null ? opp : meanGap;
+        const fit = minGap < -0.01 ? 'INTERFERENCE_FIT' : (gapInd <= exactTol && maxGap <= exactTol + 0.05 ? 'EXACT_FIT' : 'SLIDING_CLEARANCE_FIT');
 
         results.push({
           match_id: results.length,
@@ -1258,13 +1427,13 @@ function clientSideMatch(data, selFaces, exactTol, maxClear) {
           kinematic_pair: k >= 3 ? 'PRISMATIC_SLIDE' : (qFaces[0].surface_type === 'CYLINDER' ? 'CYLINDRICAL' : 'PLANAR'),
           dof_translation: k >= 3 ? 1 : 2,
           dof_rotation: k >= 2 ? 0 : 1,
-          mean_gap_mm: gap,
-          min_gap_mm: gap,
-          max_gap_mm: gap,
+          mean_gap_mm: Math.max(0, meanGap),
+          min_gap_mm: minGap,
+          max_gap_mm: maxGap,
           opposing_clearance_mm: opp,
           normal_error_deg: 0.0,
-          overlap_score: 0.95,
-          score: 0.92,
+          overlap_score: 1.0,
+          score: 0.96,
           transform_4x4: T,
         });
         return;
