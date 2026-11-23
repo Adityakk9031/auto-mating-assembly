@@ -1,0 +1,165 @@
+{
+  "scenario": "keyed_shaft_to_hubs",
+  "query_part": "keyed_shaft",
+  "selected_face_ids": [
+    0,
+    2,
+    4,
+    5
+  ],
+  "assembly_parts": [
+    "KeyedHub_A",
+    "KeyedHub_B",
+    "PlainCollar_NoKeyway",
+    "WrongSizeHub_32mm",
+    "KeyedMotorShaft"
+  ],
+  "expected_matches": 2,
+  "expected_fit": "EXACT_FIT",
+  "num_matches": 2,
+  "elapsed_sec": 0.747,
+  "matches": [
+    {
+      "match_id": 0,
+      "part_ids": [
+        0
+      ],
+      "part_names": [
+        "KeyedHub_A"
+      ],
+      "query_face_ids": [
+        0,
+        2,
+        4,
+        5
+      ],
+      "target_global_face_ids": [
+        4,
+        5,
+        3,
+        6
+      ],
+      "target_local_face_ids": [
+        4,
+        5,
+        3,
+        6
+      ],
+      "target_part_ids": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "fit_type": "EXACT_FIT",
+      "kinematic_pair": "PRISMATIC_SLIDE",
+      "dof_translation": 1,
+      "dof_rotation": 0,
+      "mean_gap_mm": 0.0175,
+      "min_gap_mm": 0.015,
+      "max_gap_mm": 0.02,
+      "opposing_clearance_mm": 0.03,
+      "normal_error_deg": 0.0,
+      "overlap_score": 1.0,
+      "score": 0.9899,
+      "transform_4x4": [
+        [
+          0.612372,
+          -0.260403,
+          -0.746452,
+          -41.771811
+        ],
+        [
+          -0.707107,
+          0.241845,
+          -0.664463,
+          44.810079
+        ],
+        [
+          0.353553,
+          0.93472,
+          -0.036033,
+          -55.4304
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.017mm, opp_clear=0.030mm, norm_err=0.00deg, overlap=1.00"
+    },
+    {
+      "match_id": 1,
+      "part_ids": [
+        1
+      ],
+      "part_names": [
+        "KeyedHub_B"
+      ],
+      "query_face_ids": [
+        0,
+        2,
+        4,
+        5
+      ],
+      "target_global_face_ids": [
+        11,
+        12,
+        10,
+        13
+      ],
+      "target_local_face_ids": [
+        4,
+        5,
+        3,
+        6
+      ],
+      "target_part_ids": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "fit_type": "EXACT_FIT",
+      "kinematic_pair": "PRISMATIC_SLIDE",
+      "dof_translation": 1,
+      "dof_rotation": 0,
+      "mean_gap_mm": 0.0175,
+      "min_gap_mm": 0.015,
+      "max_gap_mm": 0.02,
+      "opposing_clearance_mm": 0.03,
+      "normal_error_deg": 0.0,
+      "overlap_score": 1.0,
+      "score": 0.9899,
+      "transform_4x4": [
+        [
+          0.707107,
+          -0.241845,
+          0.664463,
+          60.189921
+        ],
+        [
+          -0.5,
+          0.493453,
+          0.711691,
+          -64.541712
+        ],
+        [
+          -0.5,
+          -0.835473,
+          0.228002,
+          78.483111
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.017mm, opp_clear=0.030mm, norm_err=0.00deg, overlap=1.00"
+    }
+  ]
+}

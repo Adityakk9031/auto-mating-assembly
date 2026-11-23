@@ -1,0 +1,88 @@
+{
+  "scenario": "vbelt_on_vpulley",
+  "query_part": "vbelt_arc",
+  "selected_face_ids": [
+    0,
+    1,
+    3
+  ],
+  "assembly_parts": [
+    "VPulley_R40_38deg",
+    "VPulley_Small_R26",
+    "VPulley_WrongAngle_64deg",
+    "VBelt_WrapArc"
+  ],
+  "expected_matches": 1,
+  "expected_fit": "EXACT_FIT",
+  "num_matches": 1,
+  "elapsed_sec": 1.216,
+  "matches": [
+    {
+      "match_id": 0,
+      "part_ids": [
+        0
+      ],
+      "part_names": [
+        "VPulley_R40_38deg"
+      ],
+      "query_face_ids": [
+        0,
+        1,
+        3
+      ],
+      "target_global_face_ids": [
+        4,
+        3,
+        5
+      ],
+      "target_local_face_ids": [
+        4,
+        3,
+        5
+      ],
+      "target_part_ids": [
+        0,
+        0,
+        0
+      ],
+      "fit_type": "EXACT_FIT",
+      "kinematic_pair": "REVOLUTE",
+      "dof_translation": 0,
+      "dof_rotation": 1,
+      "mean_gap_mm": 0.0275,
+      "min_gap_mm": 0.0163,
+      "max_gap_mm": 0.05,
+      "opposing_clearance_mm": 0.05,
+      "normal_error_deg": 0.0,
+      "overlap_score": 1.0,
+      "score": 0.953,
+      "transform_4x4": [
+        [
+          -0.866025,
+          0.453154,
+          0.211309,
+          -39.26927
+        ],
+        [
+          -0.5,
+          -0.784886,
+          -0.365998,
+          68.016371
+        ],
+        [
+          0.0,
+          -0.422618,
+          0.906308,
+          9.038675
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "EXACT_FIT | REVOLUTE (T:0, R:1) | mean_gap=0.028mm, opp_clear=0.050mm, norm_err=0.00deg, overlap=1.00"
+    }
+  ]
+}

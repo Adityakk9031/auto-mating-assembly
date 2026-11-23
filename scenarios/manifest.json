@@ -1,0 +1,108 @@
+[
+  {
+    "name": "chuck_key_3slot",
+    "part": "scenarios\\01_chuck_key_3slot\\chuck_key.stp",
+    "assembly": "scenarios\\01_chuck_key_3slot\\chuck_assembly.stp",
+    "faces": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "expected_matches": 3,
+    "expected_fit": "EXACT_FIT"
+  },
+  {
+    "name": "chuck_key_4slot",
+    "part": "scenarios\\01_chuck_key_4slot\\chuck_key.stp",
+    "assembly": "scenarios\\01_chuck_key_4slot\\chuck_assembly.stp",
+    "faces": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "expected_matches": 4,
+    "expected_fit": "EXACT_FIT"
+  },
+  {
+    "name": "bench_vice_sliding_jaw",
+    "part": "scenarios\\02_bench_vice\\sliding_jaw.stp",
+    "assembly": "scenarios\\02_bench_vice\\bench_vice_assembly.stp",
+    "faces": [
+      1,
+      3,
+      4
+    ],
+    "expected_matches": 1,
+    "expected_fit": "SLIDING_CLEARANCE_FIT"
+  },
+  {
+    "name": "keyed_shaft_to_hubs",
+    "part": "scenarios\\03_keyed_shaft\\keyed_shaft.stp",
+    "assembly": "scenarios\\03_keyed_shaft\\keyed_shaft_assembly.stp",
+    "faces": [
+      0,
+      2,
+      4,
+      5
+    ],
+    "expected_matches": 2,
+    "expected_fit": "EXACT_FIT"
+  },
+  {
+    "name": "pulley_on_motor_shaft",
+    "part": "scenarios\\04_pulley_motor_shaft\\pulley_wheel.stp",
+    "assembly": "scenarios\\04_pulley_motor_shaft\\motor_pulley_assembly.stp",
+    "faces": [
+      4,
+      6
+    ],
+    "expected_matches": 1,
+    "expected_fit": "SLIDING_CLEARANCE_FIT"
+  },
+  {
+    "name": "vbelt_on_vpulley",
+    "part": "scenarios\\05_pulley_vbelt\\vbelt_arc.stp",
+    "assembly": "scenarios\\05_pulley_vbelt\\vbelt_pulley_assembly.stp",
+    "faces": [
+      0,
+      1,
+      3
+    ],
+    "expected_matches": 1,
+    "expected_fit": "EXACT_FIT"
+  },
+  {
+    "name": "spherical_ball_joint",
+    "part": "scenarios\\06_sphere_freeform\\ball_stud.stp",
+    "assembly": "scenarios\\06_sphere_freeform\\ball_joint_assembly.stp",
+    "faces": [
+      1
+    ],
+    "expected_matches": 2,
+    "expected_fit": "EXACT_FIT"
+  },
+  {
+    "name": "freeform_bspline_mate",
+    "part": "scenarios\\07_freeform_spline\\freeform_plug.stp",
+    "assembly": "scenarios\\07_freeform_spline\\freeform_assembly.stp",
+    "faces": [
+      6
+    ],
+    "expected_matches": 1,
+    "expected_fit": "EXACT_FIT"
+  },
+  {
+    "name": "dovetail_cross_slide",
+    "part": "scenarios\\08_dovetail_slide\\dovetail_carriage.stp",
+    "assembly": "scenarios\\08_dovetail_slide\\dovetail_assembly.stp",
+    "faces": [
+      7,
+      8,
+      9
+    ],
+    "expected_matches": 1,
+    "expected_fit": "SLIDING_CLEARANCE_FIT"
+  }
+]

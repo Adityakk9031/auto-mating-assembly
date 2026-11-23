@@ -1,0 +1,1271 @@
+[
+  {
+    "scenario": "chuck_key_3slot",
+    "query_part": "chuck_key",
+    "selected_face_ids": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "assembly_parts": [
+      "ChuckBody",
+      "ChuckPinion_1",
+      "ChuckPinion_2",
+      "ChuckPinion_3",
+      "DecoyPinion_WrongSize",
+      "ChuckKey"
+    ],
+    "expected_matches": 3,
+    "expected_fit": "EXACT_FIT",
+    "num_matches": 3,
+    "elapsed_sec": 3.012,
+    "matches": [
+      {
+        "match_id": 0,
+        "part_ids": [
+          1
+        ],
+        "part_names": [
+          "ChuckPinion_1"
+        ],
+        "query_face_ids": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "target_global_face_ids": [
+          15,
+          18,
+          17,
+          16
+        ],
+        "target_local_face_ids": [
+          3,
+          6,
+          5,
+          4
+        ],
+        "target_part_ids": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.01,
+        "min_gap_mm": 0.01,
+        "max_gap_mm": 0.01,
+        "opposing_clearance_mm": 0.02,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9945,
+        "transform_4x4": [
+          [
+            -0.422618,
+            -0.519837,
+            0.742404,
+            19.947172
+          ],
+          [
+            -0.582563,
+            -0.471693,
+            -0.661911,
+            47.535145
+          ],
+          [
+            0.694272,
+            -0.712233,
+            -0.103492,
+            -66.586076
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.010mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+      },
+      {
+        "match_id": 1,
+        "part_ids": [
+          2
+        ],
+        "part_names": [
+          "ChuckPinion_2"
+        ],
+        "query_face_ids": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "target_global_face_ids": [
+          23,
+          26,
+          25,
+          24
+        ],
+        "target_local_face_ids": [
+          3,
+          6,
+          5,
+          4
+        ],
+        "target_part_ids": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.01,
+        "min_gap_mm": 0.01,
+        "max_gap_mm": 0.01,
+        "opposing_clearance_mm": 0.02,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9945,
+        "transform_4x4": [
+          [
+            0.715824,
+            0.668416,
+            0.20203,
+            -51.140229
+          ],
+          [
+            -0.074716,
+            -0.214346,
+            0.973896,
+            -6.492815
+          ],
+          [
+            0.694272,
+            -0.712233,
+            -0.103492,
+            -66.586076
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.010mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+      },
+      {
+        "match_id": 2,
+        "part_ids": [
+          3
+        ],
+        "part_names": [
+          "ChuckPinion_3"
+        ],
+        "query_face_ids": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "target_global_face_ids": [
+          31,
+          34,
+          33,
+          32
+        ],
+        "target_local_face_ids": [
+          3,
+          6,
+          5,
+          4
+        ],
+        "target_part_ids": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.01,
+        "min_gap_mm": 0.01,
+        "max_gap_mm": 0.01,
+        "opposing_clearance_mm": 0.02,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9945,
+        "transform_4x4": [
+          [
+            -0.293206,
+            -0.148579,
+            -0.944433,
+            31.193058
+          ],
+          [
+            0.65728,
+            0.686038,
+            -0.311985,
+            -41.04233
+          ],
+          [
+            0.694272,
+            -0.712233,
+            -0.103492,
+            -66.586076
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.010mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+      }
+    ]
+  },
+  {
+    "scenario": "chuck_key_4slot",
+    "query_part": "chuck_key",
+    "selected_face_ids": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "assembly_parts": [
+      "ChuckBody",
+      "ChuckPinion_1",
+      "ChuckPinion_2",
+      "ChuckPinion_3",
+      "ChuckPinion_4",
+      "DecoyPinion_WrongSize",
+      "ChuckKey"
+    ],
+    "expected_matches": 4,
+    "expected_fit": "EXACT_FIT",
+    "num_matches": 4,
+    "elapsed_sec": 3.929,
+    "matches": [
+      {
+        "match_id": 0,
+        "part_ids": [
+          2
+        ],
+        "part_names": [
+          "ChuckPinion_2"
+        ],
+        "query_face_ids": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "target_global_face_ids": [
+          25,
+          28,
+          27,
+          26
+        ],
+        "target_local_face_ids": [
+          3,
+          6,
+          5,
+          4
+        ],
+        "target_part_ids": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.01,
+        "min_gap_mm": 0.01,
+        "max_gap_mm": 0.01,
+        "opposing_clearance_mm": 0.02,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9945,
+        "transform_4x4": [
+          [
+            0.582563,
+            0.471693,
+            0.661911,
+            -47.535145
+          ],
+          [
+            -0.422618,
+            -0.519837,
+            0.742404,
+            19.947172
+          ],
+          [
+            0.694272,
+            -0.712233,
+            -0.103492,
+            -66.586076
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.010mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+      },
+      {
+        "match_id": 1,
+        "part_ids": [
+          1
+        ],
+        "part_names": [
+          "ChuckPinion_1"
+        ],
+        "query_face_ids": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "target_global_face_ids": [
+          17,
+          20,
+          19,
+          18
+        ],
+        "target_local_face_ids": [
+          3,
+          6,
+          5,
+          4
+        ],
+        "target_part_ids": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.01,
+        "min_gap_mm": 0.01,
+        "max_gap_mm": 0.01,
+        "opposing_clearance_mm": 0.02,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9945,
+        "transform_4x4": [
+          [
+            -0.422618,
+            -0.519837,
+            0.742404,
+            19.947172
+          ],
+          [
+            -0.582563,
+            -0.471693,
+            -0.661911,
+            47.535145
+          ],
+          [
+            0.694272,
+            -0.712233,
+            -0.103492,
+            -66.586076
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.010mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+      },
+      {
+        "match_id": 2,
+        "part_ids": [
+          3
+        ],
+        "part_names": [
+          "ChuckPinion_3"
+        ],
+        "query_face_ids": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "target_global_face_ids": [
+          33,
+          36,
+          35,
+          34
+        ],
+        "target_local_face_ids": [
+          3,
+          6,
+          5,
+          4
+        ],
+        "target_part_ids": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.01,
+        "min_gap_mm": 0.01,
+        "max_gap_mm": 0.01,
+        "opposing_clearance_mm": 0.02,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9945,
+        "transform_4x4": [
+          [
+            0.422618,
+            0.519837,
+            -0.742404,
+            -19.947172
+          ],
+          [
+            0.582563,
+            0.471693,
+            0.661911,
+            -47.535145
+          ],
+          [
+            0.694272,
+            -0.712233,
+            -0.103492,
+            -66.586076
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.010mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+      },
+      {
+        "match_id": 3,
+        "part_ids": [
+          4
+        ],
+        "part_names": [
+          "ChuckPinion_4"
+        ],
+        "query_face_ids": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "target_global_face_ids": [
+          41,
+          44,
+          43,
+          42
+        ],
+        "target_local_face_ids": [
+          3,
+          6,
+          5,
+          4
+        ],
+        "target_part_ids": [
+          4,
+          4,
+          4,
+          4
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.01,
+        "min_gap_mm": 0.01,
+        "max_gap_mm": 0.01,
+        "opposing_clearance_mm": 0.02,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9945,
+        "transform_4x4": [
+          [
+            -0.582563,
+            -0.471693,
+            -0.661911,
+            47.535145
+          ],
+          [
+            0.422618,
+            0.519837,
+            -0.742404,
+            -19.947172
+          ],
+          [
+            0.694272,
+            -0.712233,
+            -0.103492,
+            -66.586076
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.010mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+      }
+    ]
+  },
+  {
+    "scenario": "bench_vice_sliding_jaw",
+    "query_part": "sliding_jaw",
+    "selected_face_ids": [
+      1,
+      3,
+      4
+    ],
+    "assembly_parts": [
+      "ViceBody",
+      "LeadScrew",
+      "SlidingJaw"
+    ],
+    "expected_matches": 1,
+    "expected_fit": "SLIDING_CLEARANCE_FIT",
+    "num_matches": 1,
+    "elapsed_sec": 1.155,
+    "matches": [
+      {
+        "match_id": 0,
+        "part_ids": [
+          0
+        ],
+        "part_names": [
+          "ViceBody"
+        ],
+        "query_face_ids": [
+          1,
+          3,
+          4
+        ],
+        "target_global_face_ids": [
+          13,
+          15,
+          14
+        ],
+        "target_local_face_ids": [
+          13,
+          15,
+          14
+        ],
+        "target_part_ids": [
+          0,
+          0,
+          0
+        ],
+        "fit_type": "SLIDING_CLEARANCE_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.1667,
+        "min_gap_mm": 0.0,
+        "max_gap_mm": 0.25,
+        "opposing_clearance_mm": 0.5,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9233,
+        "transform_4x4": [
+          [
+            0.743145,
+            0.669131,
+            0.0,
+            -126.967685
+          ],
+          [
+            -0.669131,
+            0.743145,
+            0.0,
+            6.721332
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            10.3
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "SLIDING_CLEARANCE_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.167mm, opp_clear=0.500mm, norm_err=0.00deg, overlap=1.00"
+      }
+    ]
+  },
+  {
+    "scenario": "keyed_shaft_to_hubs",
+    "query_part": "keyed_shaft",
+    "selected_face_ids": [
+      0,
+      2,
+      4,
+      5
+    ],
+    "assembly_parts": [
+      "KeyedHub_A",
+      "KeyedHub_B",
+      "PlainCollar_NoKeyway",
+      "WrongSizeHub_32mm",
+      "KeyedMotorShaft"
+    ],
+    "expected_matches": 2,
+    "expected_fit": "EXACT_FIT",
+    "num_matches": 2,
+    "elapsed_sec": 0.747,
+    "matches": [
+      {
+        "match_id": 0,
+        "part_ids": [
+          0
+        ],
+        "part_names": [
+          "KeyedHub_A"
+        ],
+        "query_face_ids": [
+          0,
+          2,
+          4,
+          5
+        ],
+        "target_global_face_ids": [
+          4,
+          5,
+          3,
+          6
+        ],
+        "target_local_face_ids": [
+          4,
+          5,
+          3,
+          6
+        ],
+        "target_part_ids": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.0175,
+        "min_gap_mm": 0.015,
+        "max_gap_mm": 0.02,
+        "opposing_clearance_mm": 0.03,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9899,
+        "transform_4x4": [
+          [
+            0.612372,
+            -0.260403,
+            -0.746452,
+            -41.771811
+          ],
+          [
+            -0.707107,
+            0.241845,
+            -0.664463,
+            44.810079
+          ],
+          [
+            0.353553,
+            0.93472,
+            -0.036033,
+            -55.4304
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.017mm, opp_clear=0.030mm, norm_err=0.00deg, overlap=1.00"
+      },
+      {
+        "match_id": 1,
+        "part_ids": [
+          1
+        ],
+        "part_names": [
+          "KeyedHub_B"
+        ],
+        "query_face_ids": [
+          0,
+          2,
+          4,
+          5
+        ],
+        "target_global_face_ids": [
+          11,
+          12,
+          10,
+          13
+        ],
+        "target_local_face_ids": [
+          4,
+          5,
+          3,
+          6
+        ],
+        "target_part_ids": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.0175,
+        "min_gap_mm": 0.015,
+        "max_gap_mm": 0.02,
+        "opposing_clearance_mm": 0.03,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9899,
+        "transform_4x4": [
+          [
+            0.707107,
+            -0.241845,
+            0.664463,
+            60.189921
+          ],
+          [
+            -0.5,
+            0.493453,
+            0.711691,
+            -64.541712
+          ],
+          [
+            -0.5,
+            -0.835473,
+            0.228002,
+            78.483111
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.017mm, opp_clear=0.030mm, norm_err=0.00deg, overlap=1.00"
+      }
+    ]
+  },
+  {
+    "scenario": "pulley_on_motor_shaft",
+    "query_part": "pulley_wheel",
+    "selected_face_ids": [
+      4,
+      6
+    ],
+    "assembly_parts": [
+      "ElectricMotor_20mmShaft",
+      "HeavyMotor_27mmShaft",
+      "DrivePulley"
+    ],
+    "expected_matches": 1,
+    "expected_fit": "SLIDING_CLEARANCE_FIT",
+    "num_matches": 1,
+    "elapsed_sec": 0.496,
+    "matches": [
+      {
+        "match_id": 0,
+        "part_ids": [
+          0
+        ],
+        "part_names": [
+          "ElectricMotor_20mmShaft"
+        ],
+        "query_face_ids": [
+          4,
+          6
+        ],
+        "target_global_face_ids": [
+          5,
+          6
+        ],
+        "target_local_face_ids": [
+          5,
+          6
+        ],
+        "target_part_ids": [
+          0,
+          0
+        ],
+        "fit_type": "SLIDING_CLEARANCE_FIT",
+        "kinematic_pair": "REVOLUTE",
+        "dof_translation": 0,
+        "dof_rotation": 1,
+        "mean_gap_mm": 0.1004,
+        "min_gap_mm": 0.0,
+        "max_gap_mm": 0.15,
+        "opposing_clearance_mm": 0.15,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9746,
+        "transform_4x4": [
+          [
+            0.34202,
+            -0.604023,
+            0.719846,
+            -60.517561
+          ],
+          [
+            -0.0819,
+            0.743969,
+            0.663177,
+            28.018798
+          ],
+          [
+            -0.936117,
+            -0.285775,
+            0.204983,
+            14.148688
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "SLIDING_CLEARANCE_FIT | REVOLUTE (T:0, R:1) | mean_gap=0.100mm, opp_clear=0.150mm, norm_err=0.00deg, overlap=1.00"
+      }
+    ]
+  },
+  {
+    "scenario": "vbelt_on_vpulley",
+    "query_part": "vbelt_arc",
+    "selected_face_ids": [
+      0,
+      1,
+      3
+    ],
+    "assembly_parts": [
+      "VPulley_R40_38deg",
+      "VPulley_Small_R26",
+      "VPulley_WrongAngle_64deg",
+      "VBelt_WrapArc"
+    ],
+    "expected_matches": 1,
+    "expected_fit": "EXACT_FIT",
+    "num_matches": 1,
+    "elapsed_sec": 1.216,
+    "matches": [
+      {
+        "match_id": 0,
+        "part_ids": [
+          0
+        ],
+        "part_names": [
+          "VPulley_R40_38deg"
+        ],
+        "query_face_ids": [
+          0,
+          1,
+          3
+        ],
+        "target_global_face_ids": [
+          4,
+          3,
+          5
+        ],
+        "target_local_face_ids": [
+          4,
+          3,
+          5
+        ],
+        "target_part_ids": [
+          0,
+          0,
+          0
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "REVOLUTE",
+        "dof_translation": 0,
+        "dof_rotation": 1,
+        "mean_gap_mm": 0.0275,
+        "min_gap_mm": 0.0163,
+        "max_gap_mm": 0.05,
+        "opposing_clearance_mm": 0.05,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.953,
+        "transform_4x4": [
+          [
+            -0.866025,
+            0.453154,
+            0.211309,
+            -39.26927
+          ],
+          [
+            -0.5,
+            -0.784886,
+            -0.365998,
+            68.016371
+          ],
+          [
+            0.0,
+            -0.422618,
+            0.906308,
+            9.038675
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | REVOLUTE (T:0, R:1) | mean_gap=0.028mm, opp_clear=0.050mm, norm_err=0.00deg, overlap=1.00"
+      }
+    ]
+  },
+  {
+    "scenario": "spherical_ball_joint",
+    "query_part": "ball_stud",
+    "selected_face_ids": [
+      1
+    ],
+    "assembly_parts": [
+      "BallSocket_1",
+      "BallSocket_2",
+      "DecoySocket_R18",
+      "BallStud"
+    ],
+    "expected_matches": 2,
+    "expected_fit": "EXACT_FIT",
+    "num_matches": 2,
+    "elapsed_sec": 0.583,
+    "matches": [
+      {
+        "match_id": 0,
+        "part_ids": [
+          1
+        ],
+        "part_names": [
+          "BallSocket_2"
+        ],
+        "query_face_ids": [
+          1
+        ],
+        "target_global_face_ids": [
+          13
+        ],
+        "target_local_face_ids": [
+          6
+        ],
+        "target_part_ids": [
+          1
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "SPHERICAL",
+        "dof_translation": 0,
+        "dof_rotation": 3,
+        "mean_gap_mm": 0.02,
+        "min_gap_mm": 0.02,
+        "max_gap_mm": 0.02,
+        "opposing_clearance_mm": 0.02,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9747,
+        "transform_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            75.556349
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            -65.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -4.443651
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | SPHERICAL (T:0, R:3) | mean_gap=0.020mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+      },
+      {
+        "match_id": 1,
+        "part_ids": [
+          0
+        ],
+        "part_names": [
+          "BallSocket_1"
+        ],
+        "query_face_ids": [
+          1
+        ],
+        "target_global_face_ids": [
+          6
+        ],
+        "target_local_face_ids": [
+          6
+        ],
+        "target_part_ids": [
+          0
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "SPHERICAL",
+        "dof_translation": 0,
+        "dof_rotation": 3,
+        "mean_gap_mm": 0.02,
+        "min_gap_mm": 0.02,
+        "max_gap_mm": 0.02,
+        "opposing_clearance_mm": 0.02,
+        "normal_error_deg": 0.0,
+        "overlap_score": 1.0,
+        "score": 0.9667,
+        "transform_4x4": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            -65.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            2.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | SPHERICAL (T:0, R:3) | mean_gap=0.020mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+      }
+    ]
+  },
+  {
+    "scenario": "freeform_bspline_mate",
+    "query_part": "freeform_plug",
+    "selected_face_ids": [
+      6
+    ],
+    "assembly_parts": [
+      "FreeformSocket_Match",
+      "FreeformSocket_DecoyLarge",
+      "FreeformPlug"
+    ],
+    "expected_matches": 1,
+    "expected_fit": "EXACT_FIT",
+    "num_matches": 1,
+    "elapsed_sec": 0.781,
+    "matches": [
+      {
+        "match_id": 0,
+        "part_ids": [
+          0
+        ],
+        "part_names": [
+          "FreeformSocket_Match"
+        ],
+        "query_face_ids": [
+          6
+        ],
+        "target_global_face_ids": [
+          6
+        ],
+        "target_local_face_ids": [
+          6
+        ],
+        "target_part_ids": [
+          0
+        ],
+        "fit_type": "EXACT_FIT",
+        "kinematic_pair": "RIGID_0DOF",
+        "dof_translation": 0,
+        "dof_rotation": 0,
+        "mean_gap_mm": -0.0001,
+        "min_gap_mm": -0.0057,
+        "max_gap_mm": 0.004,
+        "opposing_clearance_mm": null,
+        "normal_error_deg": 0.02,
+        "overlap_score": 1.0,
+        "score": 0.999,
+        "transform_4x4": [
+          [
+            0.836495,
+            0.078014,
+            0.542393,
+            -85.364599
+          ],
+          [
+            -0.224143,
+            0.951934,
+            0.208761,
+            -44.684333
+          ],
+          [
+            -0.500036,
+            -0.296202,
+            0.813774,
+            24.660194
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "EXACT_FIT | RIGID_0DOF (T:0, R:0) | mean_gap=-0.000mm, norm_err=0.02deg, overlap=1.00"
+      }
+    ]
+  },
+  {
+    "scenario": "dovetail_cross_slide",
+    "query_part": "dovetail_carriage",
+    "selected_face_ids": [
+      7,
+      8,
+      9
+    ],
+    "assembly_parts": [
+      "DovetailWays_60deg",
+      "DecoyWays_45deg",
+      "DovetailCarriage"
+    ],
+    "expected_matches": 1,
+    "expected_fit": "SLIDING_CLEARANCE_FIT",
+    "num_matches": 1,
+    "elapsed_sec": 0.65,
+    "matches": [
+      {
+        "match_id": 0,
+        "part_ids": [
+          0
+        ],
+        "part_names": [
+          "DovetailWays_60deg"
+        ],
+        "query_face_ids": [
+          7,
+          8,
+          9
+        ],
+        "target_global_face_ids": [
+          2,
+          3,
+          4
+        ],
+        "target_local_face_ids": [
+          2,
+          3,
+          4
+        ],
+        "target_part_ids": [
+          0,
+          0,
+          0
+        ],
+        "fit_type": "SLIDING_CLEARANCE_FIT",
+        "kinematic_pair": "PRISMATIC_SLIDE",
+        "dof_translation": 1,
+        "dof_rotation": 0,
+        "mean_gap_mm": 0.2065,
+        "min_gap_mm": 0.1865,
+        "max_gap_mm": 0.2273,
+        "opposing_clearance_mm": null,
+        "normal_error_deg": 0.137,
+        "overlap_score": 1.0,
+        "score": 0.9128,
+        "transform_4x4": [
+          [
+            0.582563,
+            -0.669633,
+            -0.460664,
+            79.73838
+          ],
+          [
+            0.694272,
+            0.704676,
+            -0.146347,
+            -61.822096
+          ],
+          [
+            0.422618,
+            -0.23457,
+            0.875426,
+            7.84982
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasoning": "SLIDING_CLEARANCE_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.206mm, norm_err=0.14deg, overlap=1.00"
+      }
+    ]
+  }
+]

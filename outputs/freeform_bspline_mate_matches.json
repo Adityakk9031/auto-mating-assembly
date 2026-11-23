@@ -1,0 +1,77 @@
+{
+  "scenario": "freeform_bspline_mate",
+  "query_part": "freeform_plug",
+  "selected_face_ids": [
+    6
+  ],
+  "assembly_parts": [
+    "FreeformSocket_Match",
+    "FreeformSocket_DecoyLarge",
+    "FreeformPlug"
+  ],
+  "expected_matches": 1,
+  "expected_fit": "EXACT_FIT",
+  "num_matches": 1,
+  "elapsed_sec": 0.781,
+  "matches": [
+    {
+      "match_id": 0,
+      "part_ids": [
+        0
+      ],
+      "part_names": [
+        "FreeformSocket_Match"
+      ],
+      "query_face_ids": [
+        6
+      ],
+      "target_global_face_ids": [
+        6
+      ],
+      "target_local_face_ids": [
+        6
+      ],
+      "target_part_ids": [
+        0
+      ],
+      "fit_type": "EXACT_FIT",
+      "kinematic_pair": "RIGID_0DOF",
+      "dof_translation": 0,
+      "dof_rotation": 0,
+      "mean_gap_mm": -0.0001,
+      "min_gap_mm": -0.0057,
+      "max_gap_mm": 0.004,
+      "opposing_clearance_mm": null,
+      "normal_error_deg": 0.02,
+      "overlap_score": 1.0,
+      "score": 0.999,
+      "transform_4x4": [
+        [
+          0.836495,
+          0.078014,
+          0.542393,
+          -85.364599
+        ],
+        [
+          -0.224143,
+          0.951934,
+          0.208761,
+          -44.684333
+        ],
+        [
+          -0.500036,
+          -0.296202,
+          0.813774,
+          24.660194
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "EXACT_FIT | RIGID_0DOF (T:0, R:0) | mean_gap=-0.000mm, norm_err=0.02deg, overlap=1.00"
+    }
+  ]
+}

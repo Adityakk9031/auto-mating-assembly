@@ -1,0 +1,87 @@
+{
+  "scenario": "dovetail_cross_slide",
+  "query_part": "dovetail_carriage",
+  "selected_face_ids": [
+    7,
+    8,
+    9
+  ],
+  "assembly_parts": [
+    "DovetailWays_60deg",
+    "DecoyWays_45deg",
+    "DovetailCarriage"
+  ],
+  "expected_matches": 1,
+  "expected_fit": "SLIDING_CLEARANCE_FIT",
+  "num_matches": 1,
+  "elapsed_sec": 0.65,
+  "matches": [
+    {
+      "match_id": 0,
+      "part_ids": [
+        0
+      ],
+      "part_names": [
+        "DovetailWays_60deg"
+      ],
+      "query_face_ids": [
+        7,
+        8,
+        9
+      ],
+      "target_global_face_ids": [
+        2,
+        3,
+        4
+      ],
+      "target_local_face_ids": [
+        2,
+        3,
+        4
+      ],
+      "target_part_ids": [
+        0,
+        0,
+        0
+      ],
+      "fit_type": "SLIDING_CLEARANCE_FIT",
+      "kinematic_pair": "PRISMATIC_SLIDE",
+      "dof_translation": 1,
+      "dof_rotation": 0,
+      "mean_gap_mm": 0.2065,
+      "min_gap_mm": 0.1865,
+      "max_gap_mm": 0.2273,
+      "opposing_clearance_mm": null,
+      "normal_error_deg": 0.137,
+      "overlap_score": 1.0,
+      "score": 0.9128,
+      "transform_4x4": [
+        [
+          0.582563,
+          -0.669633,
+          -0.460664,
+          79.73838
+        ],
+        [
+          0.694272,
+          0.704676,
+          -0.146347,
+          -61.822096
+        ],
+        [
+          0.422618,
+          -0.23457,
+          0.875426,
+          7.84982
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "SLIDING_CLEARANCE_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.206mm, norm_err=0.14deg, overlap=1.00"
+    }
+  ]
+}

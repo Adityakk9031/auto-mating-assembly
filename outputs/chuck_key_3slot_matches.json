@@ -1,0 +1,237 @@
+{
+  "scenario": "chuck_key_3slot",
+  "query_part": "chuck_key",
+  "selected_face_ids": [
+    13,
+    14,
+    15,
+    16
+  ],
+  "assembly_parts": [
+    "ChuckBody",
+    "ChuckPinion_1",
+    "ChuckPinion_2",
+    "ChuckPinion_3",
+    "DecoyPinion_WrongSize",
+    "ChuckKey"
+  ],
+  "expected_matches": 3,
+  "expected_fit": "EXACT_FIT",
+  "num_matches": 3,
+  "elapsed_sec": 3.012,
+  "matches": [
+    {
+      "match_id": 0,
+      "part_ids": [
+        1
+      ],
+      "part_names": [
+        "ChuckPinion_1"
+      ],
+      "query_face_ids": [
+        13,
+        14,
+        15,
+        16
+      ],
+      "target_global_face_ids": [
+        15,
+        18,
+        17,
+        16
+      ],
+      "target_local_face_ids": [
+        3,
+        6,
+        5,
+        4
+      ],
+      "target_part_ids": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "fit_type": "EXACT_FIT",
+      "kinematic_pair": "PRISMATIC_SLIDE",
+      "dof_translation": 1,
+      "dof_rotation": 0,
+      "mean_gap_mm": 0.01,
+      "min_gap_mm": 0.01,
+      "max_gap_mm": 0.01,
+      "opposing_clearance_mm": 0.02,
+      "normal_error_deg": 0.0,
+      "overlap_score": 1.0,
+      "score": 0.9945,
+      "transform_4x4": [
+        [
+          -0.422618,
+          -0.519837,
+          0.742404,
+          19.947172
+        ],
+        [
+          -0.582563,
+          -0.471693,
+          -0.661911,
+          47.535145
+        ],
+        [
+          0.694272,
+          -0.712233,
+          -0.103492,
+          -66.586076
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.010mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+    },
+    {
+      "match_id": 1,
+      "part_ids": [
+        2
+      ],
+      "part_names": [
+        "ChuckPinion_2"
+      ],
+      "query_face_ids": [
+        13,
+        14,
+        15,
+        16
+      ],
+      "target_global_face_ids": [
+        23,
+        26,
+        25,
+        24
+      ],
+      "target_local_face_ids": [
+        3,
+        6,
+        5,
+        4
+      ],
+      "target_part_ids": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "fit_type": "EXACT_FIT",
+      "kinematic_pair": "PRISMATIC_SLIDE",
+      "dof_translation": 1,
+      "dof_rotation": 0,
+      "mean_gap_mm": 0.01,
+      "min_gap_mm": 0.01,
+      "max_gap_mm": 0.01,
+      "opposing_clearance_mm": 0.02,
+      "normal_error_deg": 0.0,
+      "overlap_score": 1.0,
+      "score": 0.9945,
+      "transform_4x4": [
+        [
+          0.715824,
+          0.668416,
+          0.20203,
+          -51.140229
+        ],
+        [
+          -0.074716,
+          -0.214346,
+          0.973896,
+          -6.492815
+        ],
+        [
+          0.694272,
+          -0.712233,
+          -0.103492,
+          -66.586076
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.010mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+    },
+    {
+      "match_id": 2,
+      "part_ids": [
+        3
+      ],
+      "part_names": [
+        "ChuckPinion_3"
+      ],
+      "query_face_ids": [
+        13,
+        14,
+        15,
+        16
+      ],
+      "target_global_face_ids": [
+        31,
+        34,
+        33,
+        32
+      ],
+      "target_local_face_ids": [
+        3,
+        6,
+        5,
+        4
+      ],
+      "target_part_ids": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "fit_type": "EXACT_FIT",
+      "kinematic_pair": "PRISMATIC_SLIDE",
+      "dof_translation": 1,
+      "dof_rotation": 0,
+      "mean_gap_mm": 0.01,
+      "min_gap_mm": 0.01,
+      "max_gap_mm": 0.01,
+      "opposing_clearance_mm": 0.02,
+      "normal_error_deg": 0.0,
+      "overlap_score": 1.0,
+      "score": 0.9945,
+      "transform_4x4": [
+        [
+          -0.293206,
+          -0.148579,
+          -0.944433,
+          31.193058
+        ],
+        [
+          0.65728,
+          0.686038,
+          -0.311985,
+          -41.04233
+        ],
+        [
+          0.694272,
+          -0.712233,
+          -0.103492,
+          -66.586076
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "EXACT_FIT | PRISMATIC_SLIDE (T:1, R:0) | mean_gap=0.010mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+    }
+  ]
+}

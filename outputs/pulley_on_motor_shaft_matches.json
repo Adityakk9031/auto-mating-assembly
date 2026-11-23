@@ -1,0 +1,82 @@
+{
+  "scenario": "pulley_on_motor_shaft",
+  "query_part": "pulley_wheel",
+  "selected_face_ids": [
+    4,
+    6
+  ],
+  "assembly_parts": [
+    "ElectricMotor_20mmShaft",
+    "HeavyMotor_27mmShaft",
+    "DrivePulley"
+  ],
+  "expected_matches": 1,
+  "expected_fit": "SLIDING_CLEARANCE_FIT",
+  "num_matches": 1,
+  "elapsed_sec": 0.496,
+  "matches": [
+    {
+      "match_id": 0,
+      "part_ids": [
+        0
+      ],
+      "part_names": [
+        "ElectricMotor_20mmShaft"
+      ],
+      "query_face_ids": [
+        4,
+        6
+      ],
+      "target_global_face_ids": [
+        5,
+        6
+      ],
+      "target_local_face_ids": [
+        5,
+        6
+      ],
+      "target_part_ids": [
+        0,
+        0
+      ],
+      "fit_type": "SLIDING_CLEARANCE_FIT",
+      "kinematic_pair": "REVOLUTE",
+      "dof_translation": 0,
+      "dof_rotation": 1,
+      "mean_gap_mm": 0.1004,
+      "min_gap_mm": 0.0,
+      "max_gap_mm": 0.15,
+      "opposing_clearance_mm": 0.15,
+      "normal_error_deg": 0.0,
+      "overlap_score": 1.0,
+      "score": 0.9746,
+      "transform_4x4": [
+        [
+          0.34202,
+          -0.604023,
+          0.719846,
+          -60.517561
+        ],
+        [
+          -0.0819,
+          0.743969,
+          0.663177,
+          28.018798
+        ],
+        [
+          -0.936117,
+          -0.285775,
+          0.204983,
+          14.148688
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "SLIDING_CLEARANCE_FIT | REVOLUTE (T:0, R:1) | mean_gap=0.100mm, opp_clear=0.150mm, norm_err=0.00deg, overlap=1.00"
+    }
+  ]
+}

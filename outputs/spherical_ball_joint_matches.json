@@ -1,0 +1,137 @@
+{
+  "scenario": "spherical_ball_joint",
+  "query_part": "ball_stud",
+  "selected_face_ids": [
+    1
+  ],
+  "assembly_parts": [
+    "BallSocket_1",
+    "BallSocket_2",
+    "DecoySocket_R18",
+    "BallStud"
+  ],
+  "expected_matches": 2,
+  "expected_fit": "EXACT_FIT",
+  "num_matches": 2,
+  "elapsed_sec": 0.583,
+  "matches": [
+    {
+      "match_id": 0,
+      "part_ids": [
+        1
+      ],
+      "part_names": [
+        "BallSocket_2"
+      ],
+      "query_face_ids": [
+        1
+      ],
+      "target_global_face_ids": [
+        13
+      ],
+      "target_local_face_ids": [
+        6
+      ],
+      "target_part_ids": [
+        1
+      ],
+      "fit_type": "EXACT_FIT",
+      "kinematic_pair": "SPHERICAL",
+      "dof_translation": 0,
+      "dof_rotation": 3,
+      "mean_gap_mm": 0.02,
+      "min_gap_mm": 0.02,
+      "max_gap_mm": 0.02,
+      "opposing_clearance_mm": 0.02,
+      "normal_error_deg": 0.0,
+      "overlap_score": 1.0,
+      "score": 0.9747,
+      "transform_4x4": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          75.556349
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -65.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -4.443651
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "EXACT_FIT | SPHERICAL (T:0, R:3) | mean_gap=0.020mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+    },
+    {
+      "match_id": 1,
+      "part_ids": [
+        0
+      ],
+      "part_names": [
+        "BallSocket_1"
+      ],
+      "query_face_ids": [
+        1
+      ],
+      "target_global_face_ids": [
+        6
+      ],
+      "target_local_face_ids": [
+        6
+      ],
+      "target_part_ids": [
+        0
+      ],
+      "fit_type": "EXACT_FIT",
+      "kinematic_pair": "SPHERICAL",
+      "dof_translation": 0,
+      "dof_rotation": 3,
+      "mean_gap_mm": 0.02,
+      "min_gap_mm": 0.02,
+      "max_gap_mm": 0.02,
+      "opposing_clearance_mm": 0.02,
+      "normal_error_deg": 0.0,
+      "overlap_score": 1.0,
+      "score": 0.9667,
+      "transform_4x4": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -65.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          2.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "reasoning": "EXACT_FIT | SPHERICAL (T:0, R:3) | mean_gap=0.020mm, opp_clear=0.020mm, norm_err=0.00deg, overlap=1.00"
+    }
+  ]
+}
