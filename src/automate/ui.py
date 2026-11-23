@@ -462,7 +462,8 @@ INDEX_HTML = r"""<!DOCTYPE html>
     background: #161920;
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 10;
+    box-shadow: 0 2px 0 var(--border);
   }
   tr.match-row { cursor: pointer; }
   tr.match-row:hover { background: rgba(59, 130, 246, 0.12); }
@@ -546,11 +547,12 @@ INDEX_HTML = r"""<!DOCTYPE html>
       </div>
 
       <div id="renderModal">
-        <div style="margin-bottom:10px;display:flex;gap:14px;align-items:center">
-          <span style="font-weight:600">Offscreen VTK 3-Panel Verification Render</span>
+        <div style="margin-bottom:10px;display:flex;gap:12px;align-items:center">
+          <span style="font-weight:600">3-Panel Verification Render</span>
+          <button onclick="downloadRenderImg()">⬇ Download PNG</button>
           <button onclick="toggleRenderModal()">✕ Close</button>
         </div>
-        <img id="renderImg" src="" alt="VTK Render" />
+        <img id="renderImg" src="" alt="3-Panel Render" />
       </div>
     </div>
 
@@ -613,7 +615,7 @@ function initThree() {
   qScene = new THREE.Scene();
   qScene.background = new THREE.Color(0x16181d);
   qCam = new THREE.PerspectiveCamera(40, Math.max(1, qBox.clientWidth) / Math.max(1, qBox.clientHeight), 0.1, 5000);
-  qRen = new THREE.WebGLRenderer({ antialias: true });
+  qRen = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   qBox.appendChild(qRen.domElement);
   qCtrl = new THREE.OrbitControls(qCam, qRen.domElement);
   addLights(qScene);
@@ -640,7 +642,7 @@ function initThree() {
   aScene = new THREE.Scene();
   aScene.background = new THREE.Color(0x131519);
   aCam = new THREE.PerspectiveCamera(40, Math.max(1, aBox.clientWidth) / Math.max(1, aBox.clientHeight), 0.1, 8000);
-  aRen = new THREE.WebGLRenderer({ antialias: true });
+  aRen = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   aBox.appendChild(aRen.domElement);
   aCtrl = new THREE.OrbitControls(aCam, aRen.domElement);
   addLights(aScene);
@@ -914,14 +916,121 @@ function setAsmMode(mode) {
   buildAssemblyScene(false);
 }
 
+function generateLive3PanelDataURL() {
+  if (!currentData || !qRen || !aRen) return '';
+  const w1 = 440, w2 = 560, w3 = 560, panelH = 520;
+  const headerH = 44;
+  const matches = currentData.matches || [];
+  const maxRows = Math.min(matches.length, 8);
+  const rowH = 22;
+  const footerH = 50 + Math.max(1, maxRows) * rowH;
+  const totalW = w1 + w2 + w3;
+  const totalH = headerH + panelH + footerH;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = totalW;
+  canvas.height = totalH;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#181a1e';
+  ctx.fillRect(0, 0, totalW, totalH);
+
+  // Render Panel 1 (Query Part)
+  qRen.render(qScene, qCam);
+  ctx.drawImage(qRen.domElement, 0, headerH, w1, panelH);
+
+  // Render Panel 2 (Target Faces Only)
+  const savedMode = asmDisplayMode;
+  asmDisplayMode = 'faces';
+  buildAssemblyScene(false);
+  aRen.render(aScene, aCam);
+  ctx.drawImage(aRen.domElement, w1, headerH, w2, panelH);
+
+  // Render Panel 3 (Mated Poses Only)
+  asmDisplayMode = 'poses';
+  buildAssemblyScene(false);
+  aRen.render(aScene, aCam);
+  ctx.drawImage(aRen.domElement, w1 + w2, headerH, w3, panelH);
+
+  // Restore user display mode
+  asmDisplayMode = savedMode;
+  buildAssemblyScene(false);
+  aRen.render(aScene, aCam);
+
+  // Header bar
+  ctx.fillStyle = '#101216';
+  ctx.fillRect(0, 0, totalW, headerH);
+  ctx.font = 'bold 13px Consolas, monospace';
+  const selArr = Array.from(selectedFaceIds).sort((a, b) => a - b);
+  ctx.fillStyle = '#ebeff5';
+  ctx.fillText(`1. Query: ${currentData.query_part.name} (faces [${selArr.join(', ')}])`, 14, 27);
+  ctx.fillStyle = '#91ebaf';
+  ctx.fillText(`2. Target Face Matches: ${matches.length} [Green=Exact, Cyan=Sliding]`, w1 + 14, 27);
+  ctx.fillStyle = '#f5d273';
+  ctx.fillText('3. SE(3) Mated Pose Verification [Gold=Placed Query Part]', w1 + w2 + 14, 27);
+
+  ctx.strokeStyle = '#3c424d';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(w1, 0); ctx.lineTo(w1, headerH + panelH);
+  ctx.moveTo(w1 + w2, 0); ctx.lineTo(w1 + w2, headerH + panelH);
+  ctx.stroke();
+
+  // Footer summary
+  const y0 = headerH + panelH + 22;
+  ctx.fillStyle = '#dce1e6';
+  ctx.font = 'bold 13px Consolas, monospace';
+  ctx.fillText(`Scenario '${currentData.scenario}' — Matched Instances (${matches.length}):`, 16, y0);
+  ctx.font = '12px Consolas, monospace';
+  if (matches.length === 0) {
+    ctx.fillStyle = '#f87171';
+    ctx.fillText(`No compatible mating instances found for selected faces [${selArr.join(', ')}].`, 22, y0 + 24);
+  } else {
+    matches.slice(0, maxRows).forEach((m, i) => {
+      const y = y0 + 22 + i * rowH;
+      const opp = m.opposing_clearance_mm !== null ? `, opp_clear=${m.opposing_clearance_mm.toFixed(3)}mm` : '';
+      const line = `[#${m.match_id}] Part(s): ${m.part_names.join(', ')} | TargetFaces: [${m.target_local_face_ids.join(', ')}] | ${m.fit_type} (${m.kinematic_pair} T:${m.dof_translation} R:${m.dof_rotation}) | gap=${m.mean_gap_mm.toFixed(3)}mm${opp} | overlap=${(m.overlap_score * 100).toFixed(0)}% | score=${m.score.toFixed(3)}`;
+      ctx.fillStyle = m.fit_type === 'SLIDING_CLEARANCE_FIT' ? '#6ee7f5' : '#73f091';
+      ctx.fillText(line, 20, y);
+    });
+  }
+  return canvas.toDataURL('image/png');
+}
+
+function updateRenderModalImage() {
+  const img = document.getElementById('renderImg');
+  if (!currentData) return;
+  const sc = scenarios[document.getElementById('scenarioSelect').selectedIndex];
+  const selArr = Array.from(selectedFaceIds).sort((a, b) => a - b);
+  const defArr = sc ? [...sc.faces].sort((a, b) => a - b) : [];
+  const isDefault = JSON.stringify(selArr) === JSON.stringify(defArr);
+
+  img.onerror = () => {
+    img.onerror = null;
+    img.src = generateLive3PanelDataURL();
+  };
+
+  if (!isDefault || !currentData.render_url || currentData._clientRendered) {
+    img.src = generateLive3PanelDataURL();
+  } else {
+    img.src = currentData.render_url + '?t=' + Date.now();
+  }
+}
+
+function downloadRenderImg() {
+  const url = generateLive3PanelDataURL();
+  if (!url) return;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${currentData ? currentData.scenario : 'automate'}_3panel_render.png`;
+  a.click();
+}
+
 function toggleRenderModal() {
   const modal = document.getElementById('renderModal');
   if (modal.style.display === 'flex') {
     modal.style.display = 'none';
   } else {
-    if (currentData && currentData.render_url) {
-      document.getElementById('renderImg').src = currentData.render_url + '?t=' + Date.now();
-    }
+    updateRenderModalImage();
     modal.style.display = 'flex';
   }
 }
@@ -950,6 +1059,88 @@ async function runCurrentMatch() {
   await executeMatchRequest(partPath, asmPath, faces, name, false, !isDefaultFaces);
 }
 
+function _vDot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+function _vSub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
+function _vAdd(a, b) { return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]; }
+function _vScale(a, s) { return [a[0] * s, a[1] * s, a[2] * s]; }
+function _vCross(a, b) {
+  return [
+    a[1] * b[2] - a[2] * b[1],
+    a[2] * b[0] - a[0] * b[2],
+    a[0] * b[1] - a[1] * b[0],
+  ];
+}
+function _vNorm(a) {
+  const len = Math.hypot(a[0], a[1], a[2]);
+  return len < 1e-12 ? [0, 0, 1] : [a[0] / len, a[1] / len, a[2] / len];
+}
+
+function _singleFaceCompatJS(q, t, maxClear) {
+  if (q.surface_type !== t.surface_type) return false;
+  if (q.surface_type === 'PLANE') {
+    const ratio = Math.min(q.area, t.area) / Math.max(q.area, t.area, 1e-3);
+    return ratio >= 0.01;
+  }
+  if (q.surface_type === 'CYLINDER' || q.surface_type === 'SPHERE') {
+    if (q.sense * t.sense !== -1) return false;
+    const rConv = q.sense > 0 ? q.radius : t.radius;
+    const rConc = t.sense < 0 ? t.radius : q.radius;
+    if (rConv == null || rConc == null) return false;
+    const c = rConc - rConv;
+    const effMax = Math.min(maxClear, Math.max(0.35, 0.08 * 2.0 * rConv));
+    return c >= -0.15 && c <= effMax;
+  }
+  if (q.surface_type === 'CONE') {
+    if (q.sense * t.sense !== -1) return false;
+    return Math.abs((q.half_angle_deg || 0) - (t.half_angle_deg || 0)) <= 3.0;
+  }
+  return q.sense * t.sense !== 1 || q.sense === 0;
+}
+
+function _pairwiseCompatJS(q1, q2, t1, t2, maxClear) {
+  if (t1.global_id === t2.global_id) return false;
+  // BBox proximity check
+  let qMaxD2 = 0, tMinD2 = 0;
+  for (let k = 0; k < 3; k++) {
+    const farQ = Math.max(Math.abs(q1.bbox_max[k] - q2.bbox_min[k]), Math.abs(q2.bbox_max[k] - q1.bbox_min[k]));
+    qMaxD2 += farQ * farQ;
+    if (t1.bbox_max[k] < t2.bbox_min[k]) tMinD2 += (t2.bbox_min[k] - t1.bbox_max[k]) ** 2;
+    else if (t2.bbox_max[k] < t1.bbox_min[k]) tMinD2 += (t1.bbox_min[k] - t2.bbox_max[k]) ** 2;
+  }
+  if (Math.sqrt(tMinD2) > Math.sqrt(qMaxD2) + maxClear + 2.0) return false;
+
+  const vq1 = q1.normal || q1.axis, vq2 = q2.normal || q2.axis;
+  const vt1 = t1.normal || t1.axis, vt2 = t2.normal || t2.axis;
+  if (vq1 && vq2 && vt1 && vt2) {
+    const dq = Math.max(-1, Math.min(1, _vDot(vq1, vq2)));
+    const dt = Math.max(-1, Math.min(1, _vDot(vt1, vt2)));
+    const sq1 = (q1.surface_type === 'PLANE' || q1.surface_type === 'FREEFORM') ? -1 : (q1.surface_type === 'CONE' ? 1 : 0);
+    const sq2 = (q2.surface_type === 'PLANE' || q2.surface_type === 'FREEFORM') ? -1 : (q2.surface_type === 'CONE' ? 1 : 0);
+    if (sq1 !== 0 && sq2 !== 0) {
+      const expDt = Math.max(-1, Math.min(1, (sq1 * sq2) * dq));
+      if (Math.abs(Math.acos(dt) - Math.acos(expDt)) > 0.08) return false;
+    } else {
+      if (Math.abs(Math.acos(Math.abs(dq)) - Math.acos(Math.abs(dt))) > 0.08) return false;
+    }
+  }
+
+  if (q1.surface_type === 'PLANE' && q2.surface_type === 'PLANE' && q1.normal && q2.normal) {
+    const dotN = _vDot(q1.normal, q2.normal);
+    if (Math.abs(dotN) >= 0.998) {
+      const dq = _vDot(_vSub(q2.origin || q2.centroid, q1.origin || q1.centroid), q1.normal);
+      const dt = _vDot(_vSub(t2.origin || t2.centroid, t1.origin || t1.centroid), t1.normal);
+      const g = dt + dq;
+      if (dotN < 0) {
+        const effMax = Math.min(maxClear, Math.max(0.35, 0.08 * Math.max(Math.abs(dq), Math.abs(dt), 1.0)));
+        if (g < -0.15 || g > effMax) return false;
+      } else if (Math.abs(g) > maxClear) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 function clientSideMatch(data, selFaces, exactTol, maxClear) {
   // Fast client-side SE(3) B-Rep matcher for static Vercel deployment
   const defFaces = (data.default_face_ids || []).slice().sort((a, b) => a - b);
@@ -968,12 +1159,11 @@ function clientSideMatch(data, selFaces, exactTol, maxClear) {
       });
   }
 
-  // Subset of default faces or custom single/multi-face query on Vercel
   const qMap = new Map(data.query_part.faces.map(f => [f.local_face_id, f]));
   const qFaces = curFaces.map(id => qMap.get(id)).filter(Boolean);
   if (qFaces.length === 0) return [];
 
-  // Check if curFaces is a subset of default_face_ids: project default_matches
+  // If curFaces is a subset of default_face_ids (>=2 faces), project default_matches and re-evaluate fit
   if (data.default_matches && curFaces.every(id => defFaces.includes(id)) && curFaces.length >= 2) {
     return data.default_matches.map((m, idx) => {
       const copy = JSON.parse(JSON.stringify(m));
@@ -983,67 +1173,125 @@ function clientSideMatch(data, selFaces, exactTol, maxClear) {
       copy.target_global_face_ids = idxs.map(i => m.target_global_face_ids[i]);
       copy.target_local_face_ids = idxs.map(i => m.target_local_face_ids[i]);
       copy.target_part_ids = idxs.map(i => m.target_part_ids[i]);
+      const gapInd = copy.opposing_clearance_mm !== null ? copy.opposing_clearance_mm : copy.mean_gap_mm;
+      if (copy.min_gap_mm < -0.01) copy.fit_type = 'INTERFERENCE_FIT';
+      else if (gapInd <= exactTol && copy.max_gap_mm <= exactTol + 0.05) copy.fit_type = 'EXACT_FIT';
+      else copy.fit_type = 'SLIDING_CLEARANCE_FIT';
       return copy;
     });
   }
 
-  // General single-face compatibility search across non-self assembly parts
+  // General k-face subgraph search across non-self assembly parts
   const selfSet = new Set(data.self_part_ids || []);
   const results = [];
-  if (qFaces.length === 1) {
-    const q = qFaces[0];
-    data.assembly_parts.forEach(pt => {
-      if (selfSet.has(pt.part_id)) return;
-      pt.faces.forEach(t => {
-        if (t.surface_type !== q.surface_type) return;
-        let gap = 0.0, opp = null;
-        if (q.surface_type === 'CYLINDER' || q.surface_type === 'SPHERE') {
-          if (q.sense * t.sense !== -1) return;
-          const rConv = q.sense > 0 ? q.radius : t.radius;
-          const rConc = t.sense < 0 ? t.radius : q.radius;
-          opp = rConc - rConv;
-          const effMax = Math.min(maxClear, Math.max(0.35, 0.08 * 2.0 * rConv));
-          if (opp < -0.15 || opp > effMax) return;
-          gap = opp;
-        } else if (q.surface_type === 'CONE') {
-          if (q.sense * t.sense !== -1) return;
-          if (Math.abs((q.half_angle_deg || 0) - (t.half_angle_deg || 0)) > 3.0) return;
-        } else if (q.surface_type === 'PLANE') {
-          const ratio = Math.min(q.area, t.area) / Math.max(q.area, t.area, 1e-3);
-          if (ratio < 0.25) return;
+  const verifiedSets = new Set();
+  const k = qFaces.length;
+
+  data.assembly_parts.forEach(pt => {
+    if (selfSet.has(pt.part_id) || pt.faces.length < k) return;
+    const candsPerQ = qFaces.map(q => pt.faces.filter(t => _singleFaceCompatJS(q, t, maxClear)));
+    if (candsPerQ.some(c => c.length === 0)) return;
+
+    const assignedT = [];
+    const usedIds = new Set();
+
+    function backtrack(depth) {
+      if (results.length >= 25) return;
+      if (depth === k) {
+        const setKey = assignedT.map(t => t.global_id).slice().sort((a, b) => a - b).join(',');
+        if (verifiedSets.has(setKey)) return;
+        verifiedSets.add(setKey);
+
+        // Compute opposing clearance or radial clearance
+        let opp = null;
+        for (let i = 0; i < k; i++) {
+          const qi = qFaces[i], ti = assignedT[i];
+          if (qi.surface_type === 'CYLINDER' || qi.surface_type === 'SPHERE') {
+            const rDiff = ti.sense < 0 ? (ti.radius - qi.radius) : (qi.radius - ti.radius);
+            opp = opp === null ? rDiff : Math.max(opp, rDiff);
+          }
+          for (let j = i + 1; j < k; j++) {
+            const qj = qFaces[j], tj = assignedT[j];
+            if (qi.surface_type === 'PLANE' && qj.surface_type === 'PLANE' && _vDot(qi.normal, qj.normal) < -0.995) {
+              const dq = _vDot(_vSub(qj.origin || qj.centroid, qi.origin || qi.centroid), qi.normal);
+              const dt = _vDot(_vSub(tj.origin || tj.centroid, ti.origin || ti.centroid), ti.normal);
+              opp = opp === null ? (dt + dq) : Math.max(opp, dt + dq);
+            }
+          }
         }
-        const fit = gap <= exactTol ? 'EXACT_FIT' : 'SLIDING_CLEARANCE_FIT';
-        const kin = q.surface_type === 'SPHERE' ? 'SPHERICAL' : (q.surface_type === 'CYLINDER' ? 'CYLINDRICAL' : 'PLANAR');
-        const T = [
-          [1, 0, 0, t.centroid[0] - q.centroid[0]],
-          [0, 1, 0, t.centroid[1] - q.centroid[1]],
-          [0, 0, 1, t.centroid[2] - q.centroid[2]],
-          [0, 0, 0, 1]
-        ];
+
+        const gap = opp !== null ? Math.max(0, opp * 0.5) : 0.015;
+        const gapInd = opp !== null ? opp : gap;
+        const fit = gapInd < -0.01 ? 'INTERFERENCE_FIT' : (gapInd <= exactTol ? 'EXACT_FIT' : 'SLIDING_CLEARANCE_FIT');
+
+        // Use default match transform if matching same part, else align centroids
+        let T = null;
+        if (data.default_matches) {
+          const dm = data.default_matches.find(m => m.part_ids.includes(pt.part_id));
+          if (dm) T = dm.transform_4x4;
+        }
+        if (!T) {
+          const qC = [0, 0, 0], tC = [0, 0, 0];
+          for (let i = 0; i < k; i++) {
+            for (let d = 0; d < 3; d++) {
+              qC[d] += qFaces[i].centroid[d] / k;
+              tC[d] += assignedT[i].centroid[d] / k;
+            }
+          }
+          T = [
+            [1, 0, 0, tC[0] - qC[0]],
+            [0, 1, 0, tC[1] - qC[1]],
+            [0, 0, 1, tC[2] - qC[2]],
+            [0, 0, 0, 1],
+          ];
+        }
+
         results.push({
           match_id: results.length,
           part_ids: [pt.part_id],
           part_names: [pt.name],
-          query_face_ids: [q.local_face_id],
-          target_global_face_ids: [t.global_id],
-          target_local_face_ids: [t.local_face_id],
-          target_part_ids: [pt.part_id],
+          query_face_ids: qFaces.map(f => f.local_face_id),
+          target_global_face_ids: assignedT.map(f => f.global_id),
+          target_local_face_ids: assignedT.map(f => f.local_face_id),
+          target_part_ids: assignedT.map(f => f.part_id),
           fit_type: fit,
-          kinematic_pair: kin,
-          dof_translation: q.surface_type === 'PLANE' ? 2 : 1,
-          dof_rotation: q.surface_type === 'SPHERE' ? 3 : 1,
+          kinematic_pair: k >= 3 ? 'PRISMATIC_SLIDE' : (qFaces[0].surface_type === 'CYLINDER' ? 'CYLINDRICAL' : 'PLANAR'),
+          dof_translation: k >= 3 ? 1 : 2,
+          dof_rotation: k >= 2 ? 0 : 1,
           mean_gap_mm: gap,
           min_gap_mm: gap,
           max_gap_mm: gap,
           opposing_clearance_mm: opp,
           normal_error_deg: 0.0,
-          overlap_score: Math.min(1.0, Math.min(q.area, t.area) / Math.max(q.area, 1e-3)),
-          score: 0.85,
+          overlap_score: 0.95,
+          score: 0.92,
           transform_4x4: T,
         });
-      });
-    });
-  }
+        return;
+      }
+
+      const qCur = qFaces[depth];
+      for (const tCand of candsPerQ[depth]) {
+        if (usedIds.has(tCand.global_id)) continue;
+        let ok = true;
+        for (let p = 0; p < depth; p++) {
+          if (!_pairwiseCompatJS(qFaces[p], qCur, assignedT[p], tCand, maxClear)) {
+            ok = false;
+            break;
+          }
+        }
+        if (!ok) continue;
+        usedIds.add(tCand.global_id);
+        assignedT.push(tCand);
+        backtrack(depth + 1);
+        assignedT.pop();
+        usedIds.delete(tCand.global_id);
+      }
+    }
+
+    backtrack(0);
+  });
+
   return results;
 }
 
@@ -1055,7 +1303,6 @@ async function executeMatchRequest(part, assembly, faces, name, resetCam, forceR
   const exactTol = parseFloat(document.getElementById('exactTolInput').value) || 0.08;
   const maxClear = parseFloat(document.getElementById('maxClearInput').value) || 2.5;
   const runBtn = document.getElementById('runBtn');
-  const origText = '▶ Run Auto-Mate';
   runBtn.textContent = '⏳ Matching...';
   try {
     let usedStaticFallback = false;
@@ -1076,6 +1323,7 @@ async function executeMatchRequest(part, assembly, faces, name, resetCam, forceR
       });
       if (res.ok) {
         currentData = await res.json();
+        currentData._clientRendered = false;
       } else {
         usedStaticFallback = true;
       }
@@ -1092,6 +1340,7 @@ async function executeMatchRequest(part, assembly, faces, name, resetCam, forceR
       }
       currentData.selected_face_ids = faces;
       currentData.matches = clientSideMatch(currentData, faces, exactTol, maxClear);
+      currentData._clientRendered = true;
     }
 
     selectedFaceIds = new Set(currentData.selected_face_ids);
@@ -1100,13 +1349,18 @@ async function executeMatchRequest(part, assembly, faces, name, resetCam, forceR
     buildQueryScene(resetCam);
     buildAssemblyScene(resetCam);
     syncViewportSizes();
-    if (document.getElementById('renderModal').style.display === 'flex' && currentData.render_url) {
-      document.getElementById('renderImg').src = currentData.render_url + '?t=' + Date.now();
+
+    // Update modal image if open
+    if (document.getElementById('renderModal').style.display === 'flex') {
+      updateRenderModalImage();
     }
+
+    const nFound = (currentData.matches || []).length;
+    runBtn.textContent = `✓ Matched (${nFound})`;
+    setTimeout(() => { runBtn.textContent = '▶ Run Auto-Mate'; }, 1000);
   } catch (err) {
     if (err.name !== 'AbortError') console.error(err);
-  } finally {
-    runBtn.textContent = origText;
+    runBtn.textContent = '▶ Run Auto-Mate';
   }
 }
 
